@@ -66,6 +66,10 @@ what is AMI ?
     within the Amazon Elastic Compute Cloud (EC2) environment.
 
 
+
+   
+
+
 what is EBS ?
 
 1.In AWS (Amazon Web Services), EBS stands for Elastic Block Store.
