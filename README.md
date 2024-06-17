@@ -73,3 +73,28 @@ what is EBS ?
 2.It is a scalable block storage service designed for use with Amazon EC2 instances. 
 3. EBS provides persistent storage volumes that can be attached to EC2 instances, 
  offering durable and reliable storage for data and applications.
+
+
+ # Creating_Simple_Ec2_Instance_Steps
+
+ to create a simple ec2 instance and getting the access in the terminal of windows server and the mobaxterminal 
+
+1. copy the ssh path and paste it in the terminal 
+
+1. before paste it in the terminal make sure that you are on the location of key which is use in instance 
+
+2. after the key location paste the ssh path and access it 
+
+3. after the access switch in the root terminal command is (sudo su ) for the mobaxterminal .
+
+for the windows users the command is (ssh -i (key name with pem extension) ubuntu@ec2-51-20-135-124.eu-north-1.compute.amazonaws.com )
+
+4. to check the machine operating system ( cat /etc/os-release)
+
+5. to check the how many storage we get use (free -m)command .
+
+6. to check the how many cpu we get then use the lscpu command .
+
+7. to check the machine storage then use the df -h command it configure the  
+
+
