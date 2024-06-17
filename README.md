@@ -152,3 +152,111 @@ def lambda_handler(event, context):
 	
 ```
 
+
+# How do I use Lambda to stop and start Amazon EC2 instances at regular intervals?
+
+
+.....Short description
+Use AWS Lambda and Amazon EventBridge to automatically stop and start Amazon EC2 instances.
+
+Note: The following resolution is a simple example solution. For a more advanced solution, use the AWS Instance Scheduler. For more information, see Automate starting and stopping AWS instances.
+
+To use Lambda to stop and start EC2 instances at regular intervals, complete the following steps:
+
+1.Create a custom AWS Identity and Access Management (IAM) policy and IAM role for your Lambda function.
+2.Create Lambda functions that stop and start your EC2 instances.
+3.Test your Lambda functions.
+4.Create EventBridge schedules that run your function on a schedule.
+
+Note: You can also create rules that react to events in your AWS account.
+Resolution
+Note: After you complete the following steps, you might receive a Client error on launch error. For more information, see When I start my instance with encrypted volumes attached, the instance immediately stops with the error "client error on launch."
+
+Get the IDs of the EC2 instances that you want to stop and start. Then, complete the following steps.
+
+Create an IAM policy and IAM role for your Lambda function
+Use the JSON policy editor to create an IAM policy. Paste the following JSON policy document into the policy editor:
+```
+{  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "arn:aws:logs:*:*:*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:Start*",
+        "ec2:Stop*"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+```
+Create an IAM role for Lambda.
+Important: When you attach a permissions policy to Lambda, make sure that you choose the IAM policy.
+
+Note: If you use an Amazon Elastic Block Store (Amazon EBS) volume that's encrypted by a customer-managed AWS Key Management Service (AWS KMS) key, then add kms:CreateGrant to the IAM policy.
+
+1.Create Lambda functions that stop and start your instances
+2.Open the Lambda console, and then choose Create function.
+3.Choose Author from scratch.
+Under Basic information, enter the following information:
+
+For Function name, enter a name that describes the function, such as "StopEC2Instances".
+For Runtime, choose # Python 3.9.
+Under Permissions, expand Change default execution role.
+Under Execution role, choose Use an existing role.
+Under Existing role, choose the IAM role.
+Choose Create function.
+On the Code tab, under Code source, paste the following code into the editor pane of the code editor on the lambda_function tab. This code stops the instances that you identify:
+```
+import boto3
+region = 'us-west-1'
+instances = ['i-12345cb6de4f78g9h', 'i-08ce9b2d7eccf6d26']
+ec2 = boto3.client('ec2', region_name=region)
+
+def lambda_handler(event, context):
+    ec2.stop_instances(InstanceIds=instances)
+    print('stopped your instances: ' + str(instances))
+```
+
+Replace us-west-1 with the AWS Region that your instances are in. Replace InstanceIds with the IDs of the instances that you want to stop and start.
+Choose Deploy.
+On the Configuration tab, choose General configuration, and then choose Edit.
+Set Timeout to 10 seconds, and then choose Save.
+Note: (Optional) You can adjust the Lambda function settings. For example, to stop and start multiple instances, you might use a different value for Timeout and Memory.
+Repeat steps 1-7 to create another function. Complete the following steps so that this function starts your instances:
+In step 3, enter a different Function name. For example, "StartEC2Instances".
+In step 5, paste the following code into the editor pane of the code editor on the lambda_function tab:
+```
+import boto3
+region = 'us-west-1'
+instances = ['i-12345cb6de4f78g9h', 'i-08ce9b2d7eccf6d26']
+ec2 = boto3.client('ec2', region_name=region)
+
+def lambda_handler(event, context):
+    ec2.start_instances(InstanceIds=instances)
+    print('started your instances: ' + str(instances))
+          Use your Region and the same instances IDs.
+```
+Test your Lambda functions
+1.Open the Lambda console, and then choose Functions.
+2.Choose one of the functions.
+3.Choose the Code tab.
+4.In the Code source section, choose Test.
+5.In the Configure test event dialog box, choose Create new test event.
+6.Enter an Event name. Then, choose Create.
+7.Note: Don't change the JSON code for the test event.
+8.Choose Test to run the function.
+9.Repeat steps 1-7 for the other function.
+10.Check the status of your instances
+11.AWS Management Console
+
+Before and after you test, check the status of your instances to confirm that your functions work.
