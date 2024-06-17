@@ -1,4 +1,4 @@
-# Aws_Projects
+`# Aws_Projects
 In this repo there will be all aws files are available
 
 #Apache2_Configuration_File
@@ -65,7 +65,7 @@ what is AMI ?
 2. An AMI is a pre-configured template used to create virtual servers, known as instances,
     within the Amazon Elastic Compute Cloud (EC2) environment.
 
-'''
+```
    import json
 
 def lambda_handler(event, context):
@@ -74,7 +74,7 @@ def lambda_handler(event, context):
         'body': json.dumps('Hello World!')
     }
 
-'''
+```
 
    
 
