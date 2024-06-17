@@ -65,20 +65,8 @@ what is AMI ?
 2. An AMI is a pre-configured template used to create virtual servers, known as instances,
     within the Amazon Elastic Compute Cloud (EC2) environment.
 
-```
-   import json
-
-def lambda_handler(event, context):
-    return {
-        'statusCode': 200,
-        'body': json.dumps('Hello World!')
-    }
-
-```
 
    
-
-
 what is EBS ?
 
 1.In AWS (Amazon Web Services), EBS stands for Elastic Block Store.
