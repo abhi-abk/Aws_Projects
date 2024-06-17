@@ -1,5 +1,5 @@
 # Aws_Projects
-In this repo there will be all aws files are available
+
 
 
 # In  this tutorial we learn How To Connect Ec2 Instance using Windows Powershell!!
